@@ -10,11 +10,13 @@ using System.Windows.Forms;
 
 namespace LesBondComptesFontLesBonsAmis
 {
-    public partial class Form1 : Form
+    public partial class MainWin : Form
     {
-        public Form1()
+        public MainWin()
         {
             InitializeComponent();
+            Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            WindowState = FormWindowState.Maximized;
         }
 
     }
