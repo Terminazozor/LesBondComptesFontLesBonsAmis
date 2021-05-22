@@ -6,6 +6,17 @@ namespace LesBondComptesFontLesBonsAmis
 {
     class Round
     {
-        int Answer;
+        private readonly Random rand = new Random();
+        private int answer { get; }
+        private int numberCard { get; }
+        private int numberOp { get; }
+        NumberCard[] nc;
+        OperateurCard[] oc;
+        public Round(int nbC,int nbOP)
+        {
+            nc = new NumberCard[nbC];
+            oc = new OperateurCard[nbOP];
+
+        }
     }
 }

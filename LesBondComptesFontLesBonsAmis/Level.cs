@@ -6,7 +6,12 @@ namespace LesBondComptesFontLesBonsAmis
 {
     class Level
     {
-        Round[] Rounds;
-        int neededPoints;
+        Round[] rounds;
+        int neededPoints { get;}
+        Level(int np)
+        {
+            rounds = new Round[4];
+            neededPoints = np;
+        }
     }
 }
