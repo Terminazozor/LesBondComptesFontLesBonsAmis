@@ -6,12 +6,27 @@ namespace LesBondComptesFontLesBonsAmis
 {
     class Level
     {
-        Round[] rounds;
-        int neededPoints { get;}
-        Level(int np)
+        private Round[] rounds=new Round[4];
+        public int neededPoints { get; private set; }
+        public Level(int np,int number)
         {
-            rounds = new Round[4];
             neededPoints = np;
+            for(int i = 0; i < 4; i++)
+            {
+                if (number == 1)
+                {
+                    rounds[i] = new Round(number, 4);
+                }
+                else
+                {
+                    rounds[i] = new Round(number, 6);
+                }
+                
+            }
+        }
+        public Round GetRound(int index)
+        {
+            return rounds[index];
         }
     }
 }

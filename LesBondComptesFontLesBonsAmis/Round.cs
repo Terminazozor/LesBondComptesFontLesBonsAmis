@@ -86,7 +86,7 @@ namespace LesBondComptesFontLesBonsAmis
                     nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), sAns);
                     break;
                 case 3:
-                    int m1 = rand.Next(0, 50);
+                    int m1 = rand.Next(1, 50);
                     int m2 = rand.Next(0, 100 / m1);
                     answer = m1 * m2;
                     genNumber[pos] = m1;
@@ -96,7 +96,7 @@ namespace LesBondComptesFontLesBonsAmis
                     nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), m2);
                     break;
                 case 4:
-                    int d1 = rand.Next(0, 50);
+                    int d1 = rand.Next(1, 50);
                     int d2 = rand.Next(1, 100 / d1);
                     answer = d2;
                     genNumber[pos] = d1;
@@ -123,13 +123,13 @@ namespace LesBondComptesFontLesBonsAmis
                         int a1;
                         if (i < 2)
                         {
-                            a1 = rand.Next(0, 50);
+                            a1 = rand.Next(1, 50);
                         }
                         else
                         {
                             a1 = answer;
                         }
-                        int a2 = rand.Next(0, 50*i - a1);
+                        int a2 = rand.Next(1, 50*i - a1);
                         answer = a1 + a2;
                         genNumber[pos] = a1;
                         if (i < 2)
@@ -144,13 +144,13 @@ namespace LesBondComptesFontLesBonsAmis
                         int s1;
                         if (i < 2)
                         {
-                            s1 = rand.Next(0, 50);
+                            s1 = rand.Next(1, 50);
                         }
                         else
                         {
                             s1 = answer;
                         }
-                        int s2 = rand.Next(0, 50 * i - s1);
+                        int s2 = rand.Next(1, 50 * i - s1);
                         answer = s1;
                         int sAns = s1 + s2;
                         if (i < 2)
@@ -167,13 +167,13 @@ namespace LesBondComptesFontLesBonsAmis
                         int m1;
                         if (i < 2)
                         {
-                            m1 = rand.Next(0, 25);
+                            m1 = rand.Next(1, 25);
                         }
                         else
                         {
                             m1 = answer;
                         }
-                        int m2 = rand.Next(0, 50*i / m1);
+                        int m2 = rand.Next(1, 50*i / m1);
                         answer = m1 * m2;
                         if (i < 2)
                         {
@@ -188,7 +188,7 @@ namespace LesBondComptesFontLesBonsAmis
                         int d1;
                         if (i < 2)
                         {
-                            d1 = rand.Next(0, 25);
+                            d1 = rand.Next(1, 25);
                         }
                         else
                         {

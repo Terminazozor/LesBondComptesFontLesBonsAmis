@@ -16,6 +16,18 @@ namespace LesBondComptesFontLesBonsAmis
         Panel pGame = new Panel();
         Button play = new Button();
         Button leave = new Button();
+        Player p = new Player();
+        Button restart = new Button();
+        Button[] life = new Button[3];
+        Label labLevel = new Label();
+        Label labTour = new Label();
+        Label points = new Label();
+        Label answer = new Label();
+        Label firstNum = new Label();
+        Label op = new Label();
+        Label secondNum = new Label();
+        ProgressBar timeLeft = new ProgressBar();
+        Label calInPro = new Label();
         public MainWin()
         {
             InitializeComponent();
@@ -26,19 +38,51 @@ namespace LesBondComptesFontLesBonsAmis
         public void initGame()
         {
             pGame.Size = Size;
-            Player p;
-            Round test = new Round(2,6);
-            pGame.Controls.Add(test.GetOperateurCard(0));
-            pGame.Controls.Add(test.GetOperateurCard(1));
-            for(int i = 0; i < test.numberCard; i++)
+            restart.Size = new Size(Screen.PrimaryScreen.Bounds.Width/100*5, Screen.PrimaryScreen.Bounds.Width / 100 * 5);
+            restart.Location = new Point(Screen.PrimaryScreen.Bounds.Width / 100 * 5, Screen.PrimaryScreen.Bounds.Width / 100 * 5);
+            restart.Text = "restart";
+            pGame.Controls.Add(restart);
+            for(int i = 0; i < 3; i++)
             {
-                if (test.GetNumberCard(i) != null)
-                {
-                    pGame.Controls.Add(test.GetNumberCard(i));
-                }
+                life[i] = new Button();
+                life[i].Size=new Size(Screen.PrimaryScreen.Bounds.Width / 100 * 5, Screen.PrimaryScreen.Bounds.Width / 100 * 5);
+                life[i].Location = new Point((Screen.PrimaryScreen.Bounds.Width/2)-(3*life[i].Width/2)+(i* life[i].Width), restart.Height);
+                life[i].Text = "Life";
+                pGame.Controls.Add(life[i]);
             }
-            label1.Text = test.answer.ToString();
+            labLevel.Text = "niv";
+            labLevel.Location = new Point(pGame.Width-pGame.Width/100*15, restart.Height);
+            pGame.Controls.Add(labLevel);
+            labTour.Text = "tour";
+            labTour.Location = new Point(labLevel.Location.X + labLevel.Size.Width, labLevel.Location.Y); 
+            pGame.Controls.Add(labTour);
+            answer.Text = "reponse attendu";
+            answer.Location = new Point(pGame.Width/2-answer.Width/2,pGame.Height/100*30);
+            pGame.Controls.Add(answer);
+            firstNum.Text = "nb1";
+            firstNum.Location = new Point(pGame.Width/2-(pGame.Width/2)/100*25,pGame.Height/2);
+            pGame.Controls.Add(firstNum);
+            op.Text = "op";
+            op.Location = new Point(pGame.Width / 2 - op.Width / 2, pGame.Height / 2);
+            pGame.Controls.Add(op);
+            secondNum.Text = "nb2";
+            secondNum.Location = new Point(pGame.Width / 2 + (pGame.Width / 2) / 100 * 25, pGame.Height / 2);
+            pGame.Controls.Add(secondNum);
+            points.Text = "points";
+            points.Location = new Point(labTour.Location.X, Screen.PrimaryScreen.Bounds.Width / 100 * 10);
+            pGame.Controls.Add(points);
+            timeLeft.Size = new Size(pGame.Width / 100 * 25, pGame.Height / 100 * 4);
+            timeLeft.Location = new Point(pGame.Width / 2 - timeLeft.Size.Width / 2, pGame.Height / 100 * 65);
+            pGame.Controls.Add(timeLeft);
+            calInPro.Text = "Calcul en cours";
+            calInPro.Location = new Point(pGame.Width / 2 - calInPro.Width/2, pGame.Height / 100 * 75);
+            pGame.Controls.Add(calInPro);
             Controls.Add(pGame);
+            game();
+        }
+        public void game()
+        {
+
         }
         private void play_MouseEnter(object sender, EventArgs e)
         {
@@ -74,7 +118,7 @@ namespace LesBondComptesFontLesBonsAmis
         }
         private void play_Click(object sender, EventArgs e)
         {
-            pMenu.Visible = false;
+            pMenu.Dispose();
             initGame();
         }
         public void menu()
