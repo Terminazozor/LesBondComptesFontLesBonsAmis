@@ -6,10 +6,11 @@ namespace LesBondComptesFontLesBonsAmis
 {
     class NumberCard : Card
     {
-        private int value;
+        public int value{ get; private set; }
         public NumberCard(int Posx, int Posy,int value) : base(Posx, Posy)
         {
             this.value = value;
+            Text = value.ToString();
         }
     }
 }

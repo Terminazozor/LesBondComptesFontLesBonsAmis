@@ -27,7 +27,18 @@ namespace LesBondComptesFontLesBonsAmis
         {
             pGame.Size = Size;
             Player p;
-            
+            Round test = new Round(2,6);
+            pGame.Controls.Add(test.GetOperateurCard(0));
+            pGame.Controls.Add(test.GetOperateurCard(1));
+            for(int i = 0; i < test.numberCard; i++)
+            {
+                if (test.GetNumberCard(i) != null)
+                {
+                    pGame.Controls.Add(test.GetNumberCard(i));
+                }
+            }
+            label1.Text = test.answer.ToString();
+            Controls.Add(pGame);
         }
         private void play_MouseEnter(object sender, EventArgs e)
         {
