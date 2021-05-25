@@ -16,17 +16,19 @@ namespace LesBondComptesFontLesBonsAmis
                 if (number == 1)
                 {
                     rounds[i] = new Round(number, 4);
+                    neededPoints = 200;
                 }
                 else
                 {
                     rounds[i] = new Round(number, 6);
+                    neededPoints = 250;
                 }
                 
             }
         }
         public Round GetRound(int index)
         {
-            return rounds[index];
+            return rounds[index-1];
         }
     }
 }

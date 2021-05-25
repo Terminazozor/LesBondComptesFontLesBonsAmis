@@ -5,11 +5,9 @@ namespace LesBondComptesFontLesBonsAmis
 {
     public class Card : Button
     {
-        private bool selected;
-        private bool used;
+        public bool used;
         public Card(int posX, int posY)
         {
-            selected = false;
             used = false;
             this.Size = new Size(Screen.PrimaryScreen.Bounds.Width/100*8,Screen.PrimaryScreen.Bounds.Height/100*20);
             Location = new Point(posX, posY);

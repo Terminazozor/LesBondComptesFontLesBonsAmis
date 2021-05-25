@@ -10,7 +10,7 @@ namespace LesBondComptesFontLesBonsAmis
         public NumberCard(int Posx, int Posy,int value) : base(Posx, Posy)
         {
             this.value = value;
-            Text = value.ToString();
+            Text = value.ToString();  
         }
     }
 }

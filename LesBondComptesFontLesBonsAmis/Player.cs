@@ -18,7 +18,7 @@ namespace LesBondComptesFontLesBonsAmis
         }
         public Level GetLevel(int index)
         {
-            return lvl[index];
+            return lvl[index-1];
         }
     }
 }

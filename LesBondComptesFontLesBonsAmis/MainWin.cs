@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LesBondComptesFontLesBonsAmis
@@ -13,12 +7,14 @@ namespace LesBondComptesFontLesBonsAmis
     public partial class MainWin : Form
     {
         Panel pMenu = new Panel();
-        Panel pGame = new Panel();
+        Panel pGame=new Panel();
+        Panel pCard;
         Button play = new Button();
         Button leave = new Button();
-        Player p = new Player();
+        Player player = new Player();
         Button restart = new Button();
         Button[] life = new Button[3];
+        ProgressBar timeLeft;
         Label labLevel = new Label();
         Label labTour = new Label();
         Label points = new Label();
@@ -26,8 +22,11 @@ namespace LesBondComptesFontLesBonsAmis
         Label firstNum = new Label();
         Label op = new Label();
         Label secondNum = new Label();
-        ProgressBar timeLeft = new ProgressBar();
         Label calInPro = new Label();
+        int nb1;
+        int nb2;
+        int currentLevel;
+        int currentRound;
         public MainWin()
         {
             InitializeComponent();
@@ -50,39 +49,203 @@ namespace LesBondComptesFontLesBonsAmis
                 life[i].Text = "Life";
                 pGame.Controls.Add(life[i]);
             }
-            labLevel.Text = "niv";
+            labLevel.Text = currentLevel.ToString();
             labLevel.Location = new Point(pGame.Width-pGame.Width/100*15, restart.Height);
             pGame.Controls.Add(labLevel);
-            labTour.Text = "tour";
+            labTour.Text = currentRound.ToString();
             labTour.Location = new Point(labLevel.Location.X + labLevel.Size.Width, labLevel.Location.Y); 
             pGame.Controls.Add(labTour);
             answer.Text = "reponse attendu";
             answer.Location = new Point(pGame.Width/2-answer.Width/2,pGame.Height/100*30);
             pGame.Controls.Add(answer);
-            firstNum.Text = "nb1";
+            firstNum.Text = "Nombre 1";
             firstNum.Location = new Point(pGame.Width/2-(pGame.Width/2)/100*25,pGame.Height/2);
             pGame.Controls.Add(firstNum);
-            op.Text = "op";
+            op.Text = "Operateur";
             op.Location = new Point(pGame.Width / 2 - op.Width / 2, pGame.Height / 2);
             pGame.Controls.Add(op);
-            secondNum.Text = "nb2";
+            secondNum.Text = "Nombre 2";
             secondNum.Location = new Point(pGame.Width / 2 + (pGame.Width / 2) / 100 * 25, pGame.Height / 2);
             pGame.Controls.Add(secondNum);
-            points.Text = "points";
+            points.Text = player.points.ToString();
             points.Location = new Point(labTour.Location.X, Screen.PrimaryScreen.Bounds.Width / 100 * 10);
             pGame.Controls.Add(points);
+            timeLeft = new ProgressBar();
             timeLeft.Size = new Size(pGame.Width / 100 * 25, pGame.Height / 100 * 4);
             timeLeft.Location = new Point(pGame.Width / 2 - timeLeft.Size.Width / 2, pGame.Height / 100 * 65);
+            timeLeft.Step = 1;
+            timeLeft.Value = 15;
+            timeLeft.Maximum = 15;
             pGame.Controls.Add(timeLeft);
             calInPro.Text = "Calcul en cours";
             calInPro.Location = new Point(pGame.Width / 2 - calInPro.Width/2, pGame.Height / 100 * 75);
             pGame.Controls.Add(calInPro);
             Controls.Add(pGame);
-            game();
+        }
+        public void restartClick(object sender, EventArgs e)
+        {
+            pGame.Controls.Clear();
+            initGame();
+            showCards(currentLevel, currentRound);
+
+        }
+        public void showCards(int lvl,int round)
+        {
+            pCard = new Panel();
+            pCard.Size = new Size(Width,Height / 100 * 25);
+            pCard.Location = new Point(0, Height - pCard.Height);
+            for (int nbCard = 0; nbCard < player.GetLevel(lvl).GetRound(round).numberCard;nbCard++)
+            {
+                pCard.Controls.Add(player.GetLevel(lvl).GetRound(round).GetNumberCard(nbCard));
+                player.GetLevel(lvl).GetRound(round).GetNumberCard(nbCard).Click += new EventHandler(numberCardClick);
+                player.GetLevel(lvl).GetRound(round).GetNumberCard(nbCard).MouseEnter += new EventHandler(CardEnter);
+                player.GetLevel(lvl).GetRound(round).GetNumberCard(nbCard).MouseLeave += new EventHandler(CardLeave);
+            }
+            for (int nbCard = 0; nbCard < player.GetLevel(lvl).GetRound(round).numberOp; nbCard++)
+            {
+                pCard.Controls.Add(player.GetLevel(lvl).GetRound(round).GetOperateurCard(nbCard));
+                player.GetLevel(lvl).GetRound(round).GetOperateurCard(nbCard).MouseEnter += new EventHandler(CardEnter);
+                player.GetLevel(lvl).GetRound(round).GetOperateurCard(nbCard).MouseLeave += new EventHandler(CardLeave);
+                player.GetLevel(lvl).GetRound(round).GetOperateurCard(nbCard).Click += new EventHandler(operateurCardClick);
+            }
+            pGame.Controls.Add(pCard);
         }
         public void game()
         {
+            showCards(currentLevel, currentRound);
+            answer.Text = player.GetLevel(currentLevel).GetRound(currentRound).answer.ToString();
+        }
+        public void win()
+        {
+            if (currentRound == 4)
+            {
+                if (currentLevel == 2)
+                {
+                    pGame.Dispose();
+                    menu();
+                   
+                }
+                else
+                {
+                    currentLevel++;
+                }
+                currentRound = 1;
+                pCard.Dispose();
+                initGame();
+                game();
+            }
+            else
+            {
+                currentRound++;
+                pCard.Dispose();
+                initGame();
+                game();
+            }
+        }
+        public void numberCardClick(object sender, EventArgs e)
+        {
+            Color back = ColorTranslator.FromHtml("#002640");
+            NumberCard card = sender as NumberCard;
+            if (card.BackColor != back)
+            {
+                card.BackColor = back;
+                if (firstNum.Text == "Nombre 1")
+                {
+                    firstNum.Text = card.value.ToString();
+                    calInPro.Text = card.value.ToString();
+                    nb1 = card.value;
+                    card.used = true;
+                }
+                else
+                {
+                    if (op.Text != "Operateur")
+                    {
+                        secondNum.Text = card.value.ToString();
+                        switch (op.Text)
+                        {
+                            case "+":
+                                calInPro.Text = (nb1 + card.value).ToString();
+                                nb2 = nb1 + card.value;
+                                card.used = true;
+                                break;
+                            case "-":
+                                calInPro.Text = (nb1 - card.value).ToString();
+                                nb2 = nb1 - card.value;
+                                card.used = true;
+                                break;
+                            case "x":
+                                calInPro.Text = (nb1 * card.value).ToString();
+                                nb2 = nb1 * card.value;
+                                card.used = true;
+                                break;
+                            case "/":
+                                calInPro.Text = (nb1 / card.value).ToString();
+                                if (nb1 % card.value==0)
+                                {
+                                    nb2 = nb1 / card.value;
+                                    card.used = true;
+                                }
+                                break;
+                        }
 
+                    }
+                    if (calInPro.Text == answer.Text)
+                    {
+                        win();
+                    }
+                    else
+                    {
+                        nb1 = nb2;
+                        firstNum.Text = calInPro.Text;
+                        op.Text = "Operateur";
+                        secondNum.Text = "Nombre 2";
+                    }
+                }
+            }
+
+
+        }
+
+        public void operateurCardClick(object sender, EventArgs e)
+        {
+            OperateurCard card = sender as OperateurCard;
+            switch (card.symbol)
+            {
+                case 1:
+                    op.Text = "+";
+                    break;
+                case 2:
+                    op.Text = "-";
+                    break;
+                case 3:
+                    op.Text = "x";
+                    break;
+                case 4:
+                    op.Text = "/";
+                    break;
+            }
+        }
+        public void CardEnter(object sender, EventArgs e)
+        {
+            Card card = sender as Card;
+            if (!card.used)
+            {
+                Color word = ColorTranslator.FromHtml("#5A7475");
+                Color back = ColorTranslator.FromHtml("#F5E9A4");
+                card.ForeColor = word;
+                card.BackColor = back;
+            }
+        }
+        public void CardLeave(object sender, EventArgs e)
+        { 
+            Card card = sender as Card;
+            if (!card.used)
+            {
+                Color word = ColorTranslator.FromHtml("#000");
+                Color back = Color.FromName("GradientActiveCaption");
+                card.ForeColor = word;
+                card.BackColor = back;
+            }
         }
         private void play_MouseEnter(object sender, EventArgs e)
         {
@@ -119,7 +282,10 @@ namespace LesBondComptesFontLesBonsAmis
         private void play_Click(object sender, EventArgs e)
         {
             pMenu.Dispose();
+            currentLevel = 1;
+            currentRound = 1;
             initGame();
+            game();
         }
         public void menu()
         {

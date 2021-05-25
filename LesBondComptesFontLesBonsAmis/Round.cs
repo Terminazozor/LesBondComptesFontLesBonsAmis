@@ -26,12 +26,12 @@ namespace LesBondComptesFontLesBonsAmis
                 genNumber[j] = -1;
             }
             int opCho = rand.Next(1, 5);
-            oc[0] = new OperateurCard(Screen.PrimaryScreen.Bounds.Width - (Screen.PrimaryScreen.Bounds.Width / 100 * 8), Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), opCho);
+            oc[0] = new OperateurCard(Screen.PrimaryScreen.Bounds.Width - (Screen.PrimaryScreen.Bounds.Width / 100 * 8), /*Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25)*/ 0, opCho);
             do
             {
                 opCho = rand.Next(1, 5);
             } while (opCho == oc[0].symbol);
-            oc[1] = new OperateurCard(Screen.PrimaryScreen.Bounds.Width - (oc[0].Width * 2), Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), opCho);
+            oc[1] = new OperateurCard(Screen.PrimaryScreen.Bounds.Width - (oc[0].Width * 2),0, opCho);
             if (lvl == 1)
             {
                 lvl1Creator();
@@ -69,10 +69,10 @@ namespace LesBondComptesFontLesBonsAmis
                     int a2 = rand.Next(0, 101 - a1);
                     answer = a1 + a2;
                     genNumber[pos] = a1;
-                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), a1);
+                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos,0, a1);
                     pos = GenPos();
                     genNumber[pos] = a2;
-                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), a2);
+                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, a2);
                     break;
                 case 2:
                     int s1 = rand.Next(0, 101);
@@ -80,36 +80,40 @@ namespace LesBondComptesFontLesBonsAmis
                     int sAns = s1 + s2;
                     answer = s1;
                     genNumber[pos] = s2;
-                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), s2);
+                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, s2);
                     pos = GenPos();
                     genNumber[pos] = sAns;
-                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), sAns);
+                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, sAns);
                     break;
                 case 3:
                     int m1 = rand.Next(1, 50);
                     int m2 = rand.Next(0, 100 / m1);
                     answer = m1 * m2;
                     genNumber[pos] = m1;
-                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), m1);
+                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, m1);
                     pos = GenPos();
                     genNumber[pos] = m2;
-                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), m2);
+                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, m2);
                     break;
                 case 4:
                     int d1 = rand.Next(1, 50);
                     int d2 = rand.Next(1, 100 / d1);
                     answer = d2;
                     genNumber[pos] = d1;
-                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), d1);
+                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, d1);
                     pos = GenPos();
                     genNumber[pos] = d2 * d1;
-                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), d2 * d1);
+                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, d2 * d1);
                     break;
             }
-            for (int i = 0; i < 3; i++)
+            int freeElement = 0;
+            foreach(int element in genNumber)
             {
-                pos = GenPos();
-                nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), rand.Next(0, 100));
+                if (element == -1)
+                {
+                    nc[freeElement] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * freeElement, 0, rand.Next(0,100));
+                }
+                freeElement++;
             }
         }
         private void lvl2Creator()
@@ -134,11 +138,11 @@ namespace LesBondComptesFontLesBonsAmis
                         genNumber[pos] = a1;
                         if (i < 2)
                         {
-                            nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), a1);
+                            nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, a1);
                         }
                         pos = GenPos();
                         genNumber[pos] = a2;
-                        nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), a2);
+                        nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, a2);
                         break;
                     case 2:
                         int s1;
@@ -157,10 +161,10 @@ namespace LesBondComptesFontLesBonsAmis
                         {
                             pos = GenPos();
                             genNumber[pos] = sAns;
-                            nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), sAns);
+                            nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos,0, sAns);
                         }
                         genNumber[pos] = s2;
-                        nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), s2);
+                        nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos,0, s2);
 
                         break;
                     case 3:
@@ -178,11 +182,11 @@ namespace LesBondComptesFontLesBonsAmis
                         if (i < 2)
                         {
                             genNumber[pos] = m1;
-                            nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), m1);
+                            nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos,0, m1);
                         }
                         pos = GenPos();
                         genNumber[pos] = m2;
-                        nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), m2);
+                        nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, m2);
                         break;
                     case 4:
                         int d1;
@@ -199,17 +203,21 @@ namespace LesBondComptesFontLesBonsAmis
                         if (i < 2)
                         {
                             genNumber[pos] = d1;
-                            nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), d1);
+                            nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, d1);
                         }
                         pos = GenPos();
                         genNumber[pos] = d2 * d1;
-                        nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), d2 * d1);
+                        nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, 0, d2 * d1);
                         break;
                 }
-                for (int j = 0; j < 5; j++)
+                int freeElement = 0;
+                foreach (int element in genNumber)
                 {
-                    pos = GenPos();
-                    nc[pos] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * pos, Screen.PrimaryScreen.Bounds.Height - (Screen.PrimaryScreen.Bounds.Height / 100 * 25), rand.Next(0, 100));
+                    if (element == -1)
+                    {
+                        nc[freeElement] = new NumberCard((Screen.PrimaryScreen.Bounds.Width / 100 * 8) * freeElement,0, rand.Next(0, 100));
+                    }
+                    freeElement++;
                 }
             }
         }
